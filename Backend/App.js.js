@@ -12,6 +12,12 @@ app.use(cors()); // Use cors middleware
 app.use(bodyParser.json());
 app.use(express.json());
 
+// Serve static files from the React build folder
+app.use(express.static(path.join(__dirname, 'build')));
+
+
+
+
 // MongoDB Connection
 mongoose.connect('mongodb+srv://kashan_abbas:assignment312345@mernapp.1grlr.mongodb.net/?retryWrites=true&w=majority')
     .then(() => {
@@ -45,7 +51,10 @@ app.use('/api', contactRoutes);
 app.use('/api/menu', menuItem);
 app.use("/api", locationRoutes);
 
-
+// All other routes will serve the React app
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 // Start Server
 const PORT = 5000;
