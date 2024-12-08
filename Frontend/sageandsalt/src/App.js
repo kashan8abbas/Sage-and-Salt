@@ -14,6 +14,10 @@ import { Signup } from "./components/signup";
 import { CartProvider } from "./components/CartContext";
 import { ViewOrders } from "./components/vieworders";
 import { ViewReservations } from "./components/viewreservations";
+import { Profile } from './components/profile';
+import { Contact } from './components/contact';
+import { Footer } from './components/footer';
+
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -58,6 +62,8 @@ function App() {
                   <Events id="events" />
                   <Reservation id="reservation" />
                   <CustomerReviews id="reviews" />
+                  <Contact id="contact" />
+                  <Footer />
                 </>
               ) : (
                 <Navigate to="/login" />
@@ -77,6 +83,12 @@ function App() {
           <Route
             path="/reservations"
             element={isAuthenticated ? <ViewReservations /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/profile"
+            element={
+              isAuthenticated ? <Profile /> : <Navigate to="/login" />
+            }
           />
         </Routes>
       </CartProvider>

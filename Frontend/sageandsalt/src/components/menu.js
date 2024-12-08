@@ -27,7 +27,7 @@ export function Menu({ id }) {
     fetchMenuItems();
   }, []);
 
-  const categories = ["All", "Appetizer", "Main Course", "Beverage"];
+  const categories = ["All", "Appetizer", "Main Course", "desserts", "Beverage"];
 
   const filteredMenuItems =
     filter === "All"
@@ -74,7 +74,7 @@ export function Menu({ id }) {
           {filteredMenuItems.map((item, index) => (
             <div key={index} className="flex flex-row items-center">
               <img
-                src={item.image}
+                src={`http://localhost:5000/${item.image}`}
                 alt={item.name}
                 className="w-16 h-16 md:w-20 md:h-20 rounded-full border border-gray-600 mb-4 md:mb-0 md:mr-6"
               />

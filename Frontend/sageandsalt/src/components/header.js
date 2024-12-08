@@ -35,30 +35,20 @@ export function Header() {
       <div className="bg-black/95 text-xs md:text-sm py-2 px-4 md:px-8">
         <div className="container mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-2">
           {/* Phone and Timings */}
-          <div className="flex flex-wrap items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Phone className="h-4 w-4 md:h-5 md:w-5 text-[#F4B41A]" />
-              <span className="text-gray-300 text-[12px] md:text-sm lg:text-base">
-                +1 5589 55488 55
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 md:h-5 md:w-5 text-[#F4B41A]" />
-              <span className="text-gray-300 text-[12px] md:text-sm lg:text-base">
-                Mon-Sat: 11AM - 23PM
-              </span>
-            </div>
+          <div className="flex flex-wrap items-center justify-between gap-4 w-full">
+          <div className="flex items-center gap-4">
+            <Phone className="h-4 w-4 md:h-5 md:w-5 text-[#F4B41A]" />
+            <span className="text-gray-300 text-[12px] md:text-sm lg:text-base">
+              +92 318 3933088
+            </span>
           </div>
-          {/* Language Links */}
-          <div className="hidden md:flex items-center gap-1 text-gray-300">
-            <Link to="#" className="hover:text-[#F4B41A] transition-colors">
-              En
-            </Link>
-            <span className="px-1">/</span>
-            <Link to="#" className="hover:text-[#F4B41A] transition-colors">
-              De
-            </Link>
+          <div className="flex items-center gap-4">
+            <Clock className="h-4 w-4 md:h-5 md:w-5 text-[#F4B41A]" />
+            <span className="text-gray-300 text-[12px] md:text-sm lg:text-base">
+              Mon-Sat: 11AM - 23PM
+            </span>
           </div>
+        </div>
         </div>
       </div>
 
@@ -67,11 +57,12 @@ export function Header() {
         <div className="container mx-auto flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <img
-              src="/logo.png"
-              alt="Sage & Salt Logo"
-              className="h-9 w-10 md:h-10 md:w-12"
-            />
+                    <img
+            src="/logo.jpg"
+            alt="Sage & Salt Logo"
+            className="h-12 w-12 rounded-full border-4 border-[rgb(205,164,94)] object-cover"
+          />
+
             <img
               src="/name.png"
               alt="Sage & Salt Name"
@@ -84,7 +75,7 @@ export function Header() {
             className="md:hidden text-white focus:outline-none"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {isMobileMenuOpen ? <X className="h-6 w-6 ml-28" /> : <Menu className="h-6 w-6 ml-28" />}
           </button>
 
           {/* Desktop Navigation */}
@@ -122,12 +113,12 @@ export function Header() {
             >
               Reviews
             </Link>
-            <Link
+            {/* <Link
               to="/#gallery"
               className="text-xs md:text-sm text-white hover:text-[#F4B41A] transition-colors"
             >
               Gallery
-            </Link>
+            </Link> */}
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={toggleDropdown}
@@ -156,12 +147,7 @@ export function Header() {
                         View Orders
                       </Link>
                     </li>
-                    <li
-                      className="text-[rgb(15,11,11)] font-medium px-4 py-2 text-xs md:text-sm hover:bg-[rgb(15,11,11)] hover:text-[rgb(205,164,94)] transition-colors"
-                      onClick={closeDropdown}
-                    >
-                      Track Order
-                    </li>
+                    
                     <li>
                       <Link
                         to="/reservations"
@@ -193,11 +179,23 @@ export function Header() {
           </div>
 
           {/* Book Table Button */}
+          <div className="flex items-center space-x-4">
           <Link to="/#reservation" className="hidden md:inline-block">
             <button className="rounded-full px-4 py-1 border-2 border-[rgb(205,164,94)] text-xs md:text-sm text-white font-normal hover:bg-[rgb(205,164,94)] hover:text-white transition-colors duration-300">
               BOOK A TABLE
             </button>
           </Link>
+          <div className="rounded-full border-2 border-[rgb(205,164,94)] h-9 w-9 overflow-hidden">
+            <Link to="/profile">
+              <img
+                src="person.png"
+                alt="Profile Icon"
+                className="h-full w-full object-cover"
+              />
+            </Link>
+          </div>
+        </div>
+
         </div>
 
         {/* Mobile Navigation */}
@@ -259,6 +257,21 @@ export function Header() {
                 >
                   BOOK A TABLE
                 </Link>
+              </li>
+              <li>
+              <div className="rounded-full border-2 border-[rgb(205,164,94)] h-16 w-16 overflow-hidden">
+                <Link
+                  to="/profile"
+                >
+                <img
+                  src="person.png"
+                  alt="Profile Icon"
+                  className="h-full w-full object-cover"
+                />
+                </Link>
+                
+            </div>
+
               </li>
             </ul>
           </div>

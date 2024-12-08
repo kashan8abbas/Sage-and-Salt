@@ -8,48 +8,52 @@ const router = express.Router();
 // View Profile Details
 router.get('/profile', authMiddleware, async (req, res) => {
     try {
-        const user = await User.findById(req.user.id)
-            .populate('orderHistory') // Populate order details
-            .populate('reservationHistory'); // Populate reservation details
-
-        if (!user) return res.status(404).json({ error: 'User not found' });
-
-        res.status(200).json({
-            name: user.name,
-            email: user.email,
-            contactNumber: user.contactNumber,
-            preferredAddress: user.preferredAddress,
-            deliveryPreferences: user.deliveryPreferences,
-            orderHistory: user.orderHistory,
-            reservationHistory: user.reservationHistory,
-        });
+      const user = await User.findById(req.user.id)
+        .populate('orderHistory')
+        .populate('reservationHistory');
+  
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      res.status(200).json({
+        name: user.name,
+        email: user.email,
+        contactNumber: user.contactNumber,
+        preferredAddress: user.preferredAddress || "N/A",
+        orderHistory: user.orderHistory || [],
+      });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Failed to fetch profile details' });
+      console.error('Error fetching profile:', err);
+      res.status(500).json({ error: 'Failed to fetch profile details' });
     }
-});
-
-
-// Update Personal Information (Name, Contact Details)
-router.put('/update', authMiddleware, async (req, res) => {
+  });
+  
+  // Update Profile
+  router.put('/update-profile', authMiddleware, async (req, res) => {
     try {
-        const { name, contactNumber } = req.body;
-        const user = await User.findById(req.user.id);
-
-        if (!user) return res.status(404).json({ error: 'User not found' });
-
-        // Update the user details
-        user.name = name || user.name;
-        user.contactNumber = contactNumber || user.contactNumber;
-
-        await user.save();
-        res.status(200).json({ message: 'Profile updated successfully', user });
+      const { name, contactNumber, preferredAddress } = req.body;
+      const user = await User.findById(req.user.id);
+  
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      user.name = name || user.name;
+      user.contactNumber = contactNumber || user.contactNumber;
+      user.preferredAddress = preferredAddress || user.preferredAddress;
+  
+      await user.save();
+  
+      res.status(200).json({
+        message: 'Profile updated successfully',
+        user,
+      });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Failed to update profile' });
+      console.error('Error updating profile:', err);
+      res.status(500).json({ error: 'Failed to update profile' });
     }
-});
-
+  });
 // Set Delivery Preferences (Preferred Address, Contact Number)
 router.put('/delivery-preferences', authMiddleware, async (req, res) => {
     try {

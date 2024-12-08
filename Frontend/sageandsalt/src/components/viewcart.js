@@ -1,10 +1,78 @@
 import React, { useState, useEffect } from "react";
 import { useCart } from "../components/CartContext";
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import stripePromise from '../utils/stripe';
+
+function CheckoutForm({ total, customization, cart, handleOrderPlacement }) {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentError, setPaymentError] = useState(null);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setIsProcessing(true);
+
+    if (!stripe || !elements) {
+      return;
+    }
+
+    try {
+      const orderDetails = {
+        items: cart.map(item => ({ itemId: item._id, quantity: item.quantity })),
+        customization,
+      };
+
+      const response = await fetch("http://localhost:5000/api/orders/create-payment-intent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+        body: JSON.stringify({ amount: total, orderDetails }),
+      });
+
+      const { clientSecret } = await response.json();
+
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+        },
+      });
+
+      if (result.error) {
+        setPaymentError(result.error.message);
+      } else {
+        await handleOrderPlacement(result.paymentIntent.id);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setPaymentError("An error occurred while processing your payment.");
+    }
+
+    setIsProcessing(false);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <CardElement className="bg-white p-3 rounded-md" />
+      {paymentError && <div className="text-red-500 mt-2">{paymentError}</div>}
+      <button
+        type="submit"
+        disabled={isProcessing}
+        className="bg-[rgb(205,164,94)] text-black font-bold px-8 py-4 rounded-full shadow-lg hover:bg-[rgb(184,144,82)] transition-all mt-4 w-full"
+      >
+        {isProcessing ? "Processing..." : "Pay and Place Order"}
+      </button>
+    </form>
+  );
+}
 
 export function CartPage() {
   const { cart, updateQuantity, clearCart } = useCart();
   const [total, setTotal] = useState(0);
-  const [customization, setCustomization] = useState(""); // State for customization
+  const [customization, setCustomization] = useState("");
 
   useEffect(() => {
     const calculateTotal = () =>
@@ -15,7 +83,7 @@ export function CartPage() {
     setTotal(calculateTotal());
   }, [cart]);
 
-  const handleCheckout = async () => {
+  const handleOrderPlacement = async (paymentIntentId) => {
     const token = localStorage.getItem("authToken");
 
     try {
@@ -33,7 +101,8 @@ export function CartPage() {
         body: JSON.stringify({
           items: orderItems,
           totalPrice: total,
-          customization, // Include customization in the request
+          customization,
+          paymentIntentId,
         }),
       });
 
@@ -46,7 +115,7 @@ export function CartPage() {
       const data = await response.json();
       alert("Order placed successfully!");
       clearCart();
-      setCustomization(""); // Clear customization after checkout
+      setCustomization("");
     } catch (err) {
       console.error(err.message);
       alert(err.message || "Failed to place order.");
@@ -70,7 +139,7 @@ export function CartPage() {
                 className="bg-[rgb(26,24,20)] rounded-lg overflow-hidden shadow-lg relative"
               >
                 <img
-                  src={item.image || "restaurent.jpg"}
+                  src={item.image || "/placeholder.svg?height=160&width=240"}
                   alt={item.name}
                   className="w-full h-40 object-cover"
                 />
@@ -122,18 +191,21 @@ export function CartPage() {
             <textarea
               value={customization}
               onChange={(e) => setCustomization(e.target.value)}
-              className="w-full h-20 p-2 border rounded mb-4"
+              className="w-full h-20 p-2 border rounded mb-4 bg-[rgb(26,24,20)] text-white"
               placeholder="Add customizations for your order (e.g., no onions, extra spicy)..."
             ></textarea>
-            <button
-              onClick={handleCheckout}
-              className="bg-[rgb(205,164,94)] text-black font-bold px-8 py-4 rounded-full shadow-lg hover:bg-[rgb(184,144,82)] transition-all"
-            >
-              Proceed to Checkout
-            </button>
+            <Elements stripe={stripePromise}>
+              <CheckoutForm
+                total={total}
+                customization={customization}
+                cart={cart}
+                handleOrderPlacement={handleOrderPlacement}
+              />
+            </Elements>
           </div>
         )}
       </div>
     </div>
   );
 }
+

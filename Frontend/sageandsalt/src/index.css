@@ -19,3 +19,21 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 1px; /* Thin scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: black; /* Transparent track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(205, 164, 94, 0.8); /* Yellow scrollbar */
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(214, 158, 25, 0.9); /* Hover effect */
+}

@@ -54,6 +54,22 @@ router.get('/order/:orderId', async (req, res) => {
     }
 });
 
+// Get all feedbacks in the system
+router.get('/all', async (req, res) => {
+    try {
+        // Fetch all feedbacks
+        const feedbacks = await Feedback.find().populate('orderId', 'orderNumber');
+        
+        if (!feedbacks || feedbacks.length === 0) {
+            return res.status(404).json({ error: 'No feedbacks found' });
+        }
+
+        res.status(200).json(feedbacks);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to fetch all feedbacks' });
+    }
+});
 
 
 module.exports = router;

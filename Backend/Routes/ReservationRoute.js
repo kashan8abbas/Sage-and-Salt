@@ -21,7 +21,7 @@ router.post('/create', authMiddleware, async (req, res) => {
             time,
             partySize,
             message,
-            status: 'Confirmed',
+            status: 'Pending',
         });
 
         // Save the reservation to the database
