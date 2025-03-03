@@ -4,10 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js",
-    "build": "cd frontend && npm run build && cd ..",
-    "vercel-build": "npm run build"
-  },
+    "start": "node app.js"
+  }
   "keywords": [],
   "author": "",
   "license": "ISC",
