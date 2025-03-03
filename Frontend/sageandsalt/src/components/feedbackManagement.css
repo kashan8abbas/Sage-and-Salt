@@ -1,0 +1,56 @@
+@keyframes slideIn {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slideIn {
+  animation: slideIn 0.5s forwards;
+}
+/* Add hover effect for the search and delete icons */
+.search-icon-container:hover {
+  background-color: #b0843b !important;
+}
+
+.delete-icon-container:hover {
+  background-color: #e63946;
+  border-color: #d62828;
+}
+
+.search-icon-container {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  width: 30px; /* Adjust size for the container */
+  height: 30px; /* Adjust size for the container */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #cda45e;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.search-icon-container:hover {
+  background-color: #b0843b;
+}
+
+.search-icon-container svg {
+  width: 18px; /* Adjust size for the icon */
+  height: 18px; /* Adjust size for the icon */
+}
+
+.input-container {
+  position: relative;
+}
+
+input[type="text"] {
+  padding-left: 30px; /* Adjust padding to make space for the icon */
+}

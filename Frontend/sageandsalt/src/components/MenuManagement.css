@@ -1,0 +1,101 @@
+/* General styles for the dark theme */
+body {
+  background-color: #0c0b09; /* Dark background */
+  color: #f1f1f1; /* Light text for contrast */
+  font-family: 'Arial', sans-serif;
+}
+
+/* Header and Form */
+h2, h3 {
+  color: #cda45e; /* Gold text for headings */
+}
+
+h4 {
+  color: #f1f1f1; /* Light text for item names */
+}
+
+/* Form elements */
+input, textarea, select, button {
+  background-color: #1a1814; /* Dark background for inputs */
+  border: 1px solid #625b4b; /* Elegant borders */
+  color: #f1f1f1; /* Light text */
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #cda45e; /* Gold accent on focus */
+}
+
+button {
+  background-color: #cda45e; /* Gold button background */
+  color: #0c0b09; /* Dark text for contrast */
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #e3c39e; /* Lighter gold on hover */
+}
+
+button:active {
+  background-color: #b38f59; /* Darker gold on active */
+}
+
+/* Menu item container */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.grid div {
+  border: 2px solid #625b4b; /* Elegant borders around items */
+  background-color: #1a1814; /* Dark background for each menu item */
+  padding: 20px;
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.grid div:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Image styling */
+img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+/* Sidebar styles */
+.sidebar {
+  background-color: #1a1814; /* Dark background for sidebar */
+  color: #f1f1f1;
+  border-right: 2px solid #625b4b; /* Elegant border for the sidebar */
+}
+
+.sidebar a {
+  color: #f1f1f1;
+  padding: 15px;
+  display: block;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar a:hover {
+  background-color: #cda45e; /* Gold highlight on hover */
+}
+
+.sidebar a.active {
+  background-color: #cda45e; /* Gold background for active link */
+  color: #0c0b09; /* Dark text for active link */
+}
+
+/* Overlay for background image */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+}
